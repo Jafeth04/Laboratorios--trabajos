@@ -1,1 +1,116 @@
 hhhhh
+CREATE TABLE Propietario (
+    id_propietario INT PRIMARY KEY,
+    nombre VARCHAR(100),
+    telefono VARCHAR(20),
+    direccion VARCHAR(150)
+);
+
+CREATE TABLE Embarcacion (
+    id_embarcacion INT PRIMARY KEY,
+    nombre VARCHAR(100),
+    longitud_pies INT,
+    estado VARCHAR(50),
+    id_propietario INT,
+    FOREIGN KEY (id_propietario)
+        REFERENCES Propietario(id_propietario)
+);
+
+CREATE TABLE Cliente (
+    id_cliente INT PRIMARY KEY,
+    nombre VARCHAR(100),
+    telefono VARCHAR(20),
+    direccion VARCHAR(150),
+    experiencia_nivel VARCHAR(50)
+);
+
+CREATE TABLE Viaje (
+    id_viaje INT PRIMARY KEY,
+    fecha_inicio DATE,
+    fecha_fin DATE,
+    destino VARCHAR(100),
+    nivel_peligro VARCHAR(50),
+    id_cliente INT,
+    id_embarcacion INT,
+    FOREIGN KEY (id_cliente)
+        REFERENCES Cliente(id_cliente),
+    FOREIGN KEY (id_embarcacion)
+        REFERENCES Embarcacion(id_embarcacion)
+);
+
+CREATE TABLE Equipo (
+    id_equipo INT PRIMARY KEY,
+    nombre VARCHAR(100),
+    tipo VARCHAR(50),
+    descripcion VARCHAR(150)
+);
+
+CREATE TABLE Equipo_Embarcacion (
+    id_equipo_embarcacion INT PRIMARY KEY,
+    id_embarcacion INT,
+    id_equipo INT,
+    cantidad INT,
+    FOREIGN KEY (id_embarcacion)
+        REFERENCES Embarcacion(id_embarcacion),
+    FOREIGN KEY (id_equipo)
+        REFERENCES Equipo(id_equipo)
+);
+
+CREATE TABLE Tripulacion (
+    id_tripulacion INT PRIMARY KEY,
+    nombre VARCHAR(100),
+    especialidad VARCHAR(100),
+    tarifa_hora DECIMAL(10,2)
+);
+
+CREATE TABLE Viaje_Tripulacion (
+    id_viaje_tripulacion INT PRIMARY KEY,
+    id_viaje INT,
+    id_tripulacion INT,
+    horas_trabajadas INT,
+    FOREIGN KEY (id_viaje)
+        REFERENCES Viaje(id_viaje),
+    FOREIGN KEY (id_tripulacion)
+        REFERENCES Tripulacion(id_tripulacion)
+);
+
+CREATE TABLE Mantenimiento (
+    id_mantenimiento INT PRIMARY KEY,
+    id_embarcacion INT,
+    fecha DATE,
+    tipo_servicio VARCHAR(100),
+    costo DECIMAL(10,2),
+    descripcion VARCHAR(150),
+    FOREIGN KEY (id_embarcacion)
+        REFERENCES Embarcacion(id_embarcacion)
+);
+
+CREATE TABLE Reparacion (
+    id_reparacion INT PRIMARY KEY,
+    id_embarcacion INT,
+    fecha DATE,
+    descripcion VARCHAR(150),
+    costo DECIMAL(10,2),
+    calidad VARCHAR(50),
+    FOREIGN KEY (id_embarcacion)
+        REFERENCES Embarcacion(id_embarcacion)
+);
+
+CREATE TABLE Despachador (
+    id_despachador INT PRIMARY KEY,
+    nombre VARCHAR(100),
+    telefono VARCHAR(20)
+);
+
+CREATE TABLE Reparacion_Viaje (
+    id_reparacion_viaje INT PRIMARY KEY,
+    id_viaje INT,
+    id_reparacion INT,
+    id_despachador INT,
+    FOREIGN KEY (id_viaje)
+        REFERENCES Viaje(id_viaje),
+    FOREIGN KEY (id_reparacion)
+        REFERENCES Reparacion(id_reparacion),
+    FOREIGN KEY (id_despachador)
+        REFERENCES Despachador(id_despachador)
+);
