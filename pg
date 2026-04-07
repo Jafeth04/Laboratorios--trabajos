@@ -1,116 +1,92 @@
 hhhhh
-CREATE TABLE Propietario (
-    id_propietario INT PRIMARY KEY,
-    nombre VARCHAR(100),
-    telefono VARCHAR(20),
-    direccion VARCHAR(150)
-);
+Table Propietario {
+  id_propietario int [pk, increment]
+  nombre varchar
+  telefono varchar
+  direccion varchar
+}
 
-CREATE TABLE Embarcacion (
-    id_embarcacion INT PRIMARY KEY,
-    nombre VARCHAR(100),
-    longitud_pies INT,
-    estado VARCHAR(50),
-    id_propietario INT,
-    FOREIGN KEY (id_propietario)
-        REFERENCES Propietario(id_propietario)
-);
+Table Embarcacion {
+  id_embarcacion int [pk, increment]
+  nombre varchar
+  longitud_pies int
+  estado varchar
+  id_propietario int [ref: > Propietario.id_propietario]
+}
 
-CREATE TABLE Cliente (
-    id_cliente INT PRIMARY KEY,
-    nombre VARCHAR(100),
-    telefono VARCHAR(20),
-    direccion VARCHAR(150),
-    experiencia_nivel VARCHAR(50)
-);
+Table Cliente {
+  id_cliente int [pk, increment]
+  nombre varchar
+  telefono varchar
+  direccion varchar
+  experiencia_nivel varchar
+}
 
-CREATE TABLE Viaje (
-    id_viaje INT PRIMARY KEY,
-    fecha_inicio DATE,
-    fecha_fin DATE,
-    destino VARCHAR(100),
-    nivel_peligro VARCHAR(50),
-    id_cliente INT,
-    id_embarcacion INT,
-    FOREIGN KEY (id_cliente)
-        REFERENCES Cliente(id_cliente),
-    FOREIGN KEY (id_embarcacion)
-        REFERENCES Embarcacion(id_embarcacion)
-);
+Table Viaje {
+  id_viaje int [pk, increment]
+  fecha_inicio date
+  fecha_fin date
+  destino varchar
+  nivel_peligro varchar
+  id_cliente int [ref: > Cliente.id_cliente]
+  id_embarcacion int [ref: > Embarcacion.id_embarcacion]
+}
 
-CREATE TABLE Equipo (
-    id_equipo INT PRIMARY KEY,
-    nombre VARCHAR(100),
-    tipo VARCHAR(50),
-    descripcion VARCHAR(150)
-);
+Table Equipo {
+  id_equipo int [pk, increment]
+  nombre varchar
+  tipo varchar
+  descripcion varchar
+}
 
-CREATE TABLE Equipo_Embarcacion (
-    id_equipo_embarcacion INT PRIMARY KEY,
-    id_embarcacion INT,
-    id_equipo INT,
-    cantidad INT,
-    FOREIGN KEY (id_embarcacion)
-        REFERENCES Embarcacion(id_embarcacion),
-    FOREIGN KEY (id_equipo)
-        REFERENCES Equipo(id_equipo)
-);
+Table Equipo_Embarcacion {
+  id_equipo_embarcacion int [pk, increment]
+  id_embarcacion int [ref: > Embarcacion.id_embarcacion]
+  id_equipo int [ref: > Equipo.id_equipo]
+  cantidad int
+}
 
-CREATE TABLE Tripulacion (
-    id_tripulacion INT PRIMARY KEY,
-    nombre VARCHAR(100),
-    especialidad VARCHAR(100),
-    tarifa_hora DECIMAL(10,2)
-);
+Table Tripulacion {
+  id_tripulacion int [pk, increment]
+  nombre varchar
+  especialidad varchar
+  tarifa_hora decimal
+}
 
-CREATE TABLE Viaje_Tripulacion (
-    id_viaje_tripulacion INT PRIMARY KEY,
-    id_viaje INT,
-    id_tripulacion INT,
-    horas_trabajadas INT,
-    FOREIGN KEY (id_viaje)
-        REFERENCES Viaje(id_viaje),
-    FOREIGN KEY (id_tripulacion)
-        REFERENCES Tripulacion(id_tripulacion)
-);
+Table Viaje_Tripulacion {
+  id_viaje_tripulacion int [pk, increment]
+  id_viaje int [ref: > Viaje.id_viaje]
+  id_tripulacion int [ref: > Tripulacion.id_tripulacion]
+  horas_trabajadas int
+}
 
-CREATE TABLE Mantenimiento (
-    id_mantenimiento INT PRIMARY KEY,
-    id_embarcacion INT,
-    fecha DATE,
-    tipo_servicio VARCHAR(100),
-    costo DECIMAL(10,2),
-    descripcion VARCHAR(150),
-    FOREIGN KEY (id_embarcacion)
-        REFERENCES Embarcacion(id_embarcacion)
-);
+Table Mantenimiento {
+  id_mantenimiento int [pk, increment]
+  id_embarcacion int [ref: > Embarcacion.id_embarcacion]
+  fecha date
+  tipo_servicio varchar
+  costo decimal
+  descripcion varchar
+}
 
-CREATE TABLE Reparacion (
-    id_reparacion INT PRIMARY KEY,
-    id_embarcacion INT,
-    fecha DATE,
-    descripcion VARCHAR(150),
-    costo DECIMAL(10,2),
-    calidad VARCHAR(50),
-    FOREIGN KEY (id_embarcacion)
-        REFERENCES Embarcacion(id_embarcacion)
-);
+Table Reparacion {
+  id_reparacion int [pk, increment]
+  id_embarcacion int [ref: > Embarcacion.id_embarcacion]
+  fecha date
+  descripcion varchar
+  costo decimal
+  calidad varchar
+}
 
-CREATE TABLE Despachador (
-    id_despachador INT PRIMARY KEY,
-    nombre VARCHAR(100),
-    telefono VARCHAR(20)
-);
+Table Despachador {
+  id_despachador int [pk, increment]
+  nombre varchar
+  telefono varchar
+}
 
-CREATE TABLE Reparacion_Viaje (
-    id_reparacion_viaje INT PRIMARY KEY,
-    id_viaje INT,
-    id_reparacion INT,
-    id_despachador INT,
-    FOREIGN KEY (id_viaje)
-        REFERENCES Viaje(id_viaje),
-    FOREIGN KEY (id_reparacion)
-        REFERENCES Reparacion(id_reparacion),
-    FOREIGN KEY (id_despachador)
-        REFERENCES Despachador(id_despachador)
-);
+Table Reparacion_Viaje {
+  id_reparacion_viaje int [pk, increment]
+  id_viaje int [ref: > Viaje.id_viaje]
+  id_reparacion int [ref: > Reparacion.id_reparacion]
+  id_despachador int [ref: > Despachador.id_despachador]
+}
